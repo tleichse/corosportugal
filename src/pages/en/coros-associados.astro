@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChoirCard from '../../components/ChoirCard.astro';
+import { useTranslations } from '../../i18n/utils';
+import { getCorosAssociados } from '../../lib/sanity';
+
+const lang = 'en' as const;
+const t = useTranslations(lang);
+const coros = await getCorosAssociados();
+const googleFormUrl = import.meta.env.PUBLIC_GOOGLE_FORM_COROS_URL;
+---
+
+<BaseLayout lang={lang} title={t('choirs.title')} description={t('choirs.intro')}>
+  <section class="hero">
+    <div class="container">
+      <h1>{t('choirs.title')}</h1>
+      <p>{t('choirs.intro')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {
+        coros.length > 0 ? (
+          <div class="card-grid">
+            {coros.map((coro) => (
+              <ChoirCard coro={coro} lang={lang} />
+            ))}
+          </div>
+        ) : (
+          <p>{t('choirs.empty')}</p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <h2>{t('choirs.registerHeading')}</h2>
+      <p>{t('choirs.registerIntro')}</p>
+      {
+        googleFormUrl ? (
+          <div class="iframe-wrapper">
+            <iframe src={googleFormUrl} title={t('choirs.registerHeading')} loading="lazy">
+              Loading form…
+            </iframe>
+          </div>
+        ) : (
+          <div class="notice notice--draft">
+            <p>{t('choirs.registerPending')}</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

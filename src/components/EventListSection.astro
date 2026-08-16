@@ -1,0 +1,38 @@
+---
+import EventCard from './EventCard.astro';
+import type { Evento } from '../lib/sanity';
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  intro: string;
+  emptyText: string;
+  eventos: Evento[];
+}
+
+const { lang, title, intro, emptyText, eventos } = Astro.props;
+---
+
+<section class="hero">
+  <div class="container">
+    <h1>{title}</h1>
+    <p>{intro}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {
+      eventos.length > 0 ? (
+        <div class="card-grid">
+          {eventos.map((evento) => (
+            <EventCard evento={evento} lang={lang} />
+          ))}
+        </div>
+      ) : (
+        <p>{emptyText}</p>
+      )
+    }
+  </div>
+</section>

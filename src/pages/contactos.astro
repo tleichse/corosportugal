@@ -1,0 +1,27 @@
+---
+// Rendered on-demand (not prerendered) so it can read the ?sent=1 / ?error=1
+// query params set by the /api/contact redirect and show the right notice.
+export const prerender = false;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { useTranslations } from '../i18n/utils';
+
+const lang = 'pt' as const;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={t('contact.title')} description={t('contact.intro')}>
+  <section class="hero">
+    <div class="container">
+      <h1>{t('contact.title')}</h1>
+      <p>{t('contact.intro')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <ContactForm lang={lang} />
+    </div>
+  </section>
+</BaseLayout>

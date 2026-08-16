@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Placeholder Open Graph image — replace once the real logo/brand assets are supplied (spec §9). -->
+  <rect width="1200" height="630" fill="#fbf7ee"/>
+  <rect x="0" y="0" width="1200" height="630" fill="none" stroke="#ddd9d2" stroke-width="4"/>
+  <text x="600" y="300" font-family="Helvetica, Arial, sans-serif" font-size="72" font-weight="700" fill="#1c1b1a" text-anchor="middle">Coros Portugal</text>
+  <text x="600" y="370" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#55524d" text-anchor="middle">Associação de referência da comunidade coral portuguesa</text>
+</svg>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+import { privacyEn } from '../../content/privacy';
+
+const lang = 'en' as const;
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('privacy.title')}
+  description="Coros Portugal Privacy Policy."
+>
+  <section class="hero">
+    <div class="container">
+      <h1>{t('privacy.title')}</h1>
+      <p>Last updated: {privacyEn.updated}</p>
+    </div>
+  </section>
+
+  <section class="section prose">
+    <div class="container">
+      <div class="notice notice--draft">
+        <p>
+          <strong>Draft document.</strong> This text is a working draft and has not yet been
+          legally reviewed. It should not be considered a final or GDPR-compliant privacy policy
+          until formally reviewed by the board (see spec §9).
+        </p>
+      </div>
+
+      {
+        privacyEn.sections.map((section) => (
+          <>
+            <h2>{section.heading}</h2>
+            {section.body.map((p) => (
+              <p>{p}</p>
+            ))}
+          </>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

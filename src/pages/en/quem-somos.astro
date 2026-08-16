@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+import { getPaginaInstitucional } from '../../lib/sanity';
+import { blocksToParagraphs } from '../../lib/portableText';
+
+const lang = 'en' as const;
+const t = useTranslations(lang);
+const pagina = await getPaginaInstitucional();
+
+// No EN fallback text ships in code (see src/content/institutional.ts) —
+// the spec (§4) requires the translation to be written and approved by
+// the Direção, not machine-generated. Only Sanity-sourced EN copy is
+// rendered here; otherwise a pending notice is shown.
+const quemSomos = blocksToParagraphs(pagina?.quemSomosEn);
+const oQueFazemos = blocksToParagraphs(pagina?.oQueFazemosEn);
+const visao = blocksToParagraphs(pagina?.visaoEn);
+const missao = blocksToParagraphs(pagina?.missaoEn);
+const valores = (pagina?.valores ?? []).filter((v) => v.nomeEn && v.descricaoEn);
+
+const hasTranslation = quemSomos.length > 0 && oQueFazemos.length > 0 && visao.length > 0 && missao.length > 0;
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('about.title')}
+  description="Coros Portugal — mission, vision and values (English translation pending board approval)."
+>
+  <section class="hero">
+    <div class="container">
+      <h1>{t('about.title')}</h1>
+    </div>
+  </section>
+
+  <section class="section prose">
+    <div class="container">
+      {
+        !hasTranslation && (
+          <div class="notice notice--draft">
+            <p>
+              The English translation of this page is still being prepared and approved by the
+              board (Direção). Please see the{' '}
+              <a href="/quem-somos">Portuguese version</a> in the meantime.
+            </p>
+          </div>
+        )
+      }
+
+      {
+        quemSomos.length > 0 && (
+          <>
+            <h2>{t('about.whoWeAre')}</h2>
+            {quemSomos.map((p) => <p>{p}</p>)}
+          </>
+        )
+      }
+
+      {
+        oQueFazemos.length > 0 && (
+          <>
+            <h2>{t('about.whatWeDo')}</h2>
+            {oQueFazemos.map((p) => <p>{p}</p>)}
+          </>
+        )
+      }
+
+      {
+        visao.length > 0 && (
+          <>
+            <h2>{t('about.vision')}</h2>
+            {visao.map((p) => <p>{p}</p>)}
+          </>
+        )
+      }
+
+      {
+        missao.length > 0 && (
+          <>
+            <h2>{t('about.mission')}</h2>
+            {missao.map((p) => <p>{p}</p>)}
+          </>
+        )
+      }
+
+      {
+        valores.length > 0 && (
+          <>
+            <h2>{t('about.values')}</h2>
+            <div class="card-grid">
+              {valores.map((valor) => (
+                <div class="card">
+                  <h3>{valor.nomeEn}</h3>
+                  <p>{valor.descricaoEn}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import { urlFor, type Evento } from '../lib/sanity';
+import { formatDate } from '../lib/format';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  evento: Evento;
+  lang: Lang;
+}
+
+const { evento, lang } = Astro.props;
+const t = useTranslations(lang);
+const title = (lang === 'en' && evento.tituloEn) || evento.titulo;
+const image = evento.imagem ? urlFor(evento.imagem)?.width(400).height(240).url() : undefined;
+---
+
+<article class="card">
+  {image && <img src={image} alt={evento.imagem?.alt ?? ''} loading="lazy" />}
+  <time datetime={evento.data}>{formatDate(evento.data, lang)}</time>
+  <h3>{title}</h3>
+  {evento.local && <p>{evento.local}</p>}
+  {
+    evento.linkExterno && (
+      <p>
+        <a href={evento.linkExterno}>{t('events.moreInfo')}</a>
+      </p>
+    )
+  }
+</article>

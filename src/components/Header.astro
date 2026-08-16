@@ -1,0 +1,55 @@
+---
+import { useTranslations, localizedPath, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const t = useTranslations(lang);
+
+const otherLang: Lang = lang === 'pt' ? 'en' : 'pt';
+
+// Strip the current locale prefix so we can rebuild the same page's URL
+// in the other language.
+const pathWithoutLang = currentPath.replace(/^\/en/, '') || '/';
+const switchHref = localizedPath(otherLang, pathWithoutLang);
+
+const navItems: Array<{ key: Parameters<typeof t>[0]; path: string }> = [
+  { key: 'nav.home', path: '/' },
+  { key: 'nav.about', path: '/quem-somos' },
+  { key: 'nav.agenda', path: '/eventos/agenda' },
+  { key: 'nav.history', path: '/eventos/historico' },
+  { key: 'nav.choirs', path: '/coros-associados' },
+  { key: 'nav.contact', path: '/contactos' },
+];
+---
+
+<a href="#conteudo" class="skip-link">Saltar para o conteúdo / Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href={localizedPath(lang, '/')} class="site-header__brand">{t('site.name')}</a>
+    <nav aria-label="Navegação principal / Main navigation">
+      <ul class="site-nav">
+        {
+          navItems.map((item) => {
+            const href = localizedPath(lang, item.path);
+            const isCurrent =
+              currentPath === href || (item.path === '/' && pathWithoutLang === '/');
+            return (
+              <li>
+                <a href={href} aria-current={isCurrent ? 'page' : undefined}>
+                  {t(item.key)}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+    <div class="lang-switch">
+      <a href={switchHref} hreflang={otherLang}>{t('lang.switchTo')}</a>
+    </div>
+  </div>
+</header>

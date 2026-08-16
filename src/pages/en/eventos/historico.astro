@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import EventListSection from '../../../components/EventListSection.astro';
+import { useTranslations } from '../../../i18n/utils';
+import { getEventosHistorico } from '../../../lib/sanity';
+
+const lang = 'en' as const;
+const t = useTranslations(lang);
+const eventos = await getEventosHistorico();
+---
+
+<BaseLayout lang={lang} title={t('events.history.title')} description={t('events.history.intro')}>
+  <EventListSection
+    lang={lang}
+    title={t('events.history.title')}
+    intro={t('events.history.intro')}
+    emptyText={t('events.history.empty')}
+    eventos={eventos}
+  />
+</BaseLayout>

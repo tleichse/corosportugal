@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventCard from '../components/EventCard.astro';
+import { useTranslations, localizedPath } from '../i18n/utils';
+import { getEventosDestaque } from '../lib/sanity';
+
+const lang = 'pt' as const;
+const t = useTranslations(lang);
+const eventos = await getEventosDestaque();
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('site.name')}
+  description={t('home.intro')}
+>
+  <section class="hero">
+    <div class="container">
+      <h1>{t('home.heading')}</h1>
+      <p>{t('home.intro')}</p>
+      <p>
+        <a class="btn" href={localizedPath(lang, '/quem-somos')}>{t('home.missionCta')}</a>
+        <a class="btn btn-secondary" href={localizedPath(lang, '/contactos')}>{t('home.contactCta')}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('home.eventsHeading')}</h2>
+      {
+        eventos.length > 0 ? (
+          <div class="card-grid">
+            {eventos.map((evento) => (
+              <EventCard evento={evento} lang={lang} />
+            ))}
+          </div>
+        ) : (
+          <p>{t('home.eventsEmpty')}</p>
+        )
+      }
+      <p style="margin-top: 1.5rem;">
+        <a href={localizedPath(lang, '/eventos/agenda')}>{t('home.eventsSeeAll')} &rarr;</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import { useTranslations, localizedPath, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <h2>{t('site.name')}</h2>
+      <p>{t('site.tagline')}</p>
+    </div>
+    <div>
+      <h2>{t('contact.title')}</h2>
+      <!-- Placeholder contact details — replace with the confirmed values
+           from spec §9 ("Contactos definitivos a publicar"). -->
+      <p>
+        {t('contact.email')}: <a href="mailto:geral@corosportugal.pt">geral@corosportugal.pt</a><br />
+        {t('contact.phone')}: <a href="tel:+351000000000">+351 000 000 000</a>
+      </p>
+    </div>
+    <div>
+      <h2>{t('contact.social')}</h2>
+      <!-- Placeholder social links — update once accounts are confirmed. -->
+      <p>
+        <a href="#" rel="me">Instagram</a><br />
+        <a href="#" rel="me">Facebook</a>
+      </p>
+    </div>
+    <div>
+      <h2>&nbsp;</h2>
+      <p><a href={localizedPath(lang, '/politica-de-privacidade')}>{t('nav.privacy')}</a></p>
+    </div>
+  </div>
+  <div class="container" style="margin-top: 1.5rem;">
+    <p>&copy; {year} {t('site.name')}. {t('footer.rights')}</p>
+  </div>
+</footer>

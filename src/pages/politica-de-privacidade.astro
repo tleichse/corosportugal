@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { useTranslations } from '../i18n/utils';
+import { privacyPt } from '../content/privacy';
+
+const lang = 'pt' as const;
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('privacy.title')}
+  description="Política de Privacidade da Coros Portugal."
+>
+  <section class="hero">
+    <div class="container">
+      <h1>{t('privacy.title')}</h1>
+      <p>Última atualização: {privacyPt.updated}</p>
+    </div>
+  </section>
+
+  <section class="section prose">
+    <div class="container">
+      <div class="notice notice--draft">
+        <p>
+          <strong>Documento provisório.</strong> Este texto é um rascunho de trabalho e ainda não
+          foi validado juridicamente. Não deve ser considerado uma política de privacidade
+          definitiva ou conforme com o RGPD até revisão formal pela Direção (ver spec §9).
+        </p>
+      </div>
+
+      {
+        privacyPt.sections.map((section) => (
+          <>
+            <h2>{section.heading}</h2>
+            {section.body.map((p) => (
+              <p>{p}</p>
+            ))}
+          </>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

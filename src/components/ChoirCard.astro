@@ -1,0 +1,29 @@
+---
+import { urlFor, type CoroAssociado } from '../lib/sanity';
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  coro: CoroAssociado;
+  lang: Lang;
+}
+
+const { coro, lang } = Astro.props;
+const descricao = (lang === 'en' && coro.descricaoBreveEn) || coro.descricaoBreve;
+const logo = coro.logotipo ? urlFor(coro.logotipo)?.width(160).height(160).url() : undefined;
+---
+
+<article class="card">
+  {logo && <img src={logo} alt={coro.logotipo?.alt ?? coro.nome} width="80" height="80" />}
+  <h3>{coro.nome}</h3>
+  {coro.cidade && <p>{coro.cidade}</p>}
+  {descricao && <p>{descricao}</p>}
+  <p>
+    {coro.email && <a href={`mailto:${coro.email}`}>{coro.email}</a>}
+    {coro.website && (
+      <>
+        {' '}
+        &middot; <a href={coro.website}>{coro.website.replace(/^https?:\/\//, '')}</a>
+      </>
+    )}
+  </p>
+</article>

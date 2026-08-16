@@ -1,0 +1,57 @@
+---
+import { useTranslations, localizedPath, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const status = Astro.url.searchParams.get('sent') ? 'sent' : Astro.url.searchParams.get('error') ? 'error' : null;
+const redirectTo = localizedPath(lang, '/contactos');
+---
+
+<h2>{t('contact.form.heading')}</h2>
+
+{status === 'sent' && (
+  <div class="notice">
+    <p>{t('contact.form.success')}</p>
+  </div>
+)}
+{status === 'error' && (
+  <div class="notice notice--draft">
+    <p>{t('contact.form.error')}</p>
+  </div>
+)}
+
+<form method="POST" action="/api/contact">
+  <input type="hidden" name="redirectTo" value={redirectTo} />
+  <!-- Honeypot field, hidden from real visitors via CSS, not `hidden`/`type=hidden`
+       (which some bots skip when autofilling). -->
+  <div aria-hidden="true" style="position:absolute; left:-9999px;">
+    <label for="company">Company</label>
+    <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="field">
+    <label for="name">{t('contact.form.name')}</label>
+    <input type="text" id="name" name="name" required />
+  </div>
+
+  <div class="field">
+    <label for="email">{t('contact.form.email')}</label>
+    <input type="email" id="email" name="email" required />
+  </div>
+
+  <div class="field">
+    <label for="message">{t('contact.form.message')}</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+  </div>
+
+  <div class="field field--checkbox">
+    <input type="checkbox" id="consent" name="consent" value="yes" required />
+    <label for="consent">{t('contact.form.consent')}</label>
+  </div>
+
+  <button type="submit" class="btn">{t('contact.form.submit')}</button>
+</form>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://corosportugal.pt/sitemap-index.xml
